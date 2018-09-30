@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 public class Warrior extends Fighter{
+	CollisionManager collisionManager;
 	
 	public Warrior(int newRadius, int newx, int newy) {
 		description = "A Warrior";
@@ -14,6 +15,7 @@ public class Warrior extends Fighter{
 		y = newy;
 		location = new Point(x,y);
 		localSearchSpace = 50;
+		collisionManager = new CollisionManager();
 	}
 	
 	// Find the closest Archer
@@ -39,7 +41,7 @@ public class Warrior extends Fighter{
 		
 	}
 	
-	public void update(Fighter target, ContainerBox box) {
+	public void update(Fighter target, Fighter myself, ContainerBox box) {
 		
 		// Update current target information
 		this.target = target;
@@ -70,6 +72,9 @@ public class Warrior extends Fighter{
 		} else if (y > ballMaxY) {
 		   y = ballMaxY;
 		   
+		} else if (collisionManager.findCollision(myself, target) == true){
+			System.out.println("Collision Detected");
+			
 		} else {
 			
 			// The x and y offsets to move the ball

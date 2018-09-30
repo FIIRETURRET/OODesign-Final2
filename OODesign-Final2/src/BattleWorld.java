@@ -119,11 +119,11 @@ public class BattleWorld extends JPanel {
     * Update the game objects, with proper collision detection and response.
     */
    public void gameUpdate() {
-      war1.update(general.findClosestFighter(war1), box);
-      archer1.update(general.findClosestFighter(archer1), box);
+      war1.update(general.findClosestFighter(war1), war1, box);
+      archer1.update(general.findClosestFighter(archer1), archer1, box);
       //war2.update(general.findClosestFighter(war2), box);
-      archer2.update(general.findClosestFighter(archer2), box);
-      cavalry1.update(general.findClosestFighter(cavalry1), box);
+      archer2.update(general.findClosestFighter(archer2), archer2, box);
+      cavalry1.update(general.findClosestFighter(cavalry1), cavalry1, box);
       
    }
    

@@ -39,7 +39,7 @@ public class Cavalry extends Fighter{
 		
 	}
 	
-	public void update(Fighter target, ContainerBox box) {
+	public void update(Fighter target, Fighter myself, ContainerBox box) {
 		
 		// Update current target information
 		this.target = target;

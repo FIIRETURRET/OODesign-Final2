@@ -49,7 +49,7 @@ public abstract class Fighter {
 	public abstract void targetFighter();
 	public abstract void move();
 	public abstract void attack(Fighter fighter);
-	public abstract void update(Fighter fighter, ContainerBox box);
+	public abstract void update(Fighter fighter, Fighter myself, ContainerBox box);
 	public abstract void draw(Graphics g);
 	public abstract void takeDamage(int damage);
 

@@ -42,7 +42,7 @@ public class Archer extends Fighter{
 		health = health - damage;
 	}
 	
-	public void update(Fighter target, ContainerBox box) {
+	public void update(Fighter target, Fighter myself, ContainerBox box) {
 		// Update current target information
 		this.target = target;
 		// If we don't have a target don't update
