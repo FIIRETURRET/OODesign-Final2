@@ -13,6 +13,44 @@ public class General {
 		
 	}
 	
+	public Fighter findCLosestTypeFighter(Fighter fighter, Fighter closestEnemy, Point enemyPoint, Fighter[] fighterList) {
+		for (int x = 0; x < fighterList.length; x++) {
+			if (findDistanceBetweenPoints(fighter.getPoint(), fighterList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
+				// if our new enemy is closer than our old enemy update the saved point and closestEnemy
+				// if our archer in the list is dead, don't consider it
+				if (fighterList[x].health > 0) {
+					enemyPoint = fighterList[x].getPoint();
+					closestEnemy = fighterList[x];
+					fighter.setTarget(closestEnemy);
+					fighter.setTargetPoint(closestEnemy.getPoint());
+				} else {
+					closestEnemy = fighter.getTarget();
+					enemyPoint = fighter.getTargetPoint();
+					fighter.setTarget(closestEnemy);
+					fighter.setTargetPoint(closestEnemy.getPoint());
+				}
+			}
+			// Otherwise keep the current target
+			else {
+				// If the current target is dead take the new one
+				if (closestEnemy.health > 0)
+				{
+					closestEnemy = fighter.getTarget();
+					enemyPoint = fighter.getTargetPoint();
+					fighter.setTarget(closestEnemy);
+					fighter.setTargetPoint(closestEnemy.getPoint());
+				} else {
+					enemyPoint = fighterList[x].getPoint();
+					closestEnemy = fighterList[x];
+					fighter.setTarget(closestEnemy);
+					fighter.setTargetPoint(closestEnemy.getPoint());
+				}
+			}
+		}
+		
+		return closestEnemy;
+	}
+	
 	public Fighter findClosestFighter(Fighter fighter) {
 		Point enemyPoint;
 		Fighter closestEnemy;
@@ -29,151 +67,17 @@ public class General {
 		
 		// Check to see if we are dealing with a warrior or an archer
 		if(fighter.type == "warrior") {
-			// First find the closest cavalry unit, warriors can fight back against cavalry.
-			for (int x = 0; x < cavalryList.length; x++) {
-				if (findDistanceBetweenPoints(fighter.getPoint(), cavalryList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
-					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					// if our archer in the list is dead, don't consider it
-					if (cavalryList[x].health > 0) {
-						enemyPoint = cavalryList[x].getPoint();
-						closestEnemy = cavalryList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-				// Otherwise keep the current target
-				else {
-					// If the current target is dead take the new one
-					if (closestEnemy.health > 0)
-					{
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						enemyPoint = cavalryList[x].getPoint();
-						closestEnemy = cavalryList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-			}
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, cavalryList );
+			enemyPoint = closestEnemy.location;
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, archerList );
+			enemyPoint = closestEnemy.location;
+		} else if (fighter.type == "archer") {
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, warriorList );
+			enemyPoint = closestEnemy.location;
 			
-			// Run through the list of archers so see which is closest
-			for (int x = 0; x < archerList.length; x++) {
-				// Find the closest enemy by running though a list of all archers in the field
-				if (findDistanceBetweenPoints(fighter.getPoint(), archerList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
-					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					// if our archer in the list is dead, don't consider it
-					if (archerList[x].health > 0) {
-						enemyPoint = archerList[x].getPoint();
-						closestEnemy = archerList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-				// Otherwise keep the current target
-				else {
-					// If the current target is dead take the new one
-					if (closestEnemy.health > 0)
-					{
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						enemyPoint = archerList[x].getPoint();
-						closestEnemy = archerList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-			}
-		}
-		else if (fighter.type == "archer") {
-			// Run through the list of archers so see which is closest
-			for (int x = 0; x < warriorList.length; x++) {
-				// Find the closest enemy by running though a list of all fighters in the field
-				if (findDistanceBetweenPoints(fighter.getPoint(), warriorList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
-					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					if (warriorList[x].health > 0) {
-						enemyPoint = warriorList[x].getPoint();
-						closestEnemy = warriorList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-				// Otherwise keep the current target
-				else {
-					// If the current target is dead take the new one
-					if (closestEnemy.health > 0)
-					{
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						enemyPoint = warriorList[x].getPoint();
-						closestEnemy = warriorList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-			}
-		}
-		else if(fighter.type == "cavalry") {
-			// Run through the list of archers so see which is closest
-			for (int x = 0; x < warriorList.length; x++) {
-				// Find the closest enemy by running though a list of all fighters in the field
-				if (findDistanceBetweenPoints(fighter.getPoint(), warriorList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
-					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					if (warriorList[x].health > 0) {
-						enemyPoint = warriorList[x].getPoint();
-						closestEnemy = warriorList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-				// Otherwise keep the current target
-				else {
-					// If the current target is dead take the new one
-					if (closestEnemy.health > 0)
-					{
-						closestEnemy = fighter.getTarget();
-						enemyPoint = fighter.getTargetPoint();
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					} else {
-						enemyPoint = warriorList[x].getPoint();
-						closestEnemy = warriorList[x];
-						fighter.setTarget(closestEnemy);
-						fighter.setTargetPoint(closestEnemy.getPoint());
-					}
-				}
-			}
-		}
-		else {
-			
+		} else if(fighter.type == "cavalry") {
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, warriorList );
+			enemyPoint = closestEnemy.location;
 		}
 		return closestEnemy;
 	}

@@ -10,7 +10,7 @@ public class BattleWorld extends JPanel {
    private static final int UPDATE_RATE = 30;  // Frames per second (fps)
    
    int numWarriors = 20;
-   int numArchers = 10;
+   int numArchers = 20;
    int numCavalry = 10;
    Fighter[] listOfWarriors;
    Fighter[] listOfArchers;
