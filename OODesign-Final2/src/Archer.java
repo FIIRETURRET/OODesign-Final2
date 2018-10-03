@@ -40,6 +40,7 @@ public class Archer extends Fighter{
 	
 	public void takeDamage(int damage) {
 		health = health - damage;
+		System.out.println("Archer took damage");
 	}
 	
 	public void update(Fighter target, Fighter myself, ContainerBox box) {
@@ -61,93 +62,95 @@ public class Archer extends Fighter{
 		
 		if (health > 0) {
 		
-			//Movement
-			// Check if the ball moves over the bounds. If so, adjust the position and speed.
-			if (x < ballMinX) {
-			   x = ballMinX;     // Re-position the ball at the edge
-			   
-			} else if (x > ballMaxX) {
-			   x = ballMaxX;
-			}
-			// If the ball is to the left of the target, move left
-			else if(x < targetPoint.x) {
-				x -= speed;
-			}
-			// If the ball is to the right of the target, move right
-			else if(x > targetPoint.x) {
-				x += speed;
-			}
-			// If the ball is on the same spot as the target, move a random direction
-			else if(x == targetPoint.x) {
-				randomNum = ThreadLocalRandom.current().nextInt(0,2);
-				if (randomNum == 0) {
-					x += speed;
+			if (target.health > 0) {
+				//Movement
+				// Check if the ball moves over the bounds. If so, adjust the position and speed.
+				if (x < ballMinX) {
+				   x = ballMinX;     // Re-position the ball at the edge
+				   
+				} else if (x > ballMaxX) {
+				   x = ballMaxX;
 				}
-				else {
+				// If the ball is to the left of the target, move left
+				else if(x < targetPoint.x) {
 					x -= speed;
 				}
-			}
-			else if(x == targetPoint.x && y == targetPoint.y) {
-				randomNum = ThreadLocalRandom.current().nextInt(0,4);
-				if (randomNum == 0) {
-					x += speed+1*2;
-					y += speed+1*2;
+				// If the ball is to the right of the target, move right
+				else if(x > targetPoint.x) {
+					x += speed;
 				}
-				else if(randomNum == 1){
-					x -= speed+1*2;
-					y -= speed+1*2;
+				// If the ball is on the same spot as the target, move a random direction
+				else if(x == targetPoint.x) {
+					randomNum = ThreadLocalRandom.current().nextInt(0,2);
+					if (randomNum == 0) {
+						x += speed;
+					}
+					else {
+						x -= speed;
+					}
 				}
-				else if (randomNum == 2) {
-					x += speed+1*2;
-					y -= speed+1*2;
+				else if(x == targetPoint.x && y == targetPoint.y) {
+					randomNum = ThreadLocalRandom.current().nextInt(0,4);
+					if (randomNum == 0) {
+						x += speed+1*2;
+						y += speed+1*2;
+					}
+					else if(randomNum == 1){
+						x -= speed+1*2;
+						y -= speed+1*2;
+					}
+					else if (randomNum == 2) {
+						x += speed+1*2;
+						y -= speed+1*2;
+					}
+					else {
+						x -= speed+1*2;
+						y += speed+1*2;
+					}
 				}
-				else {
-					x -= speed+1*2;
-					y += speed+1*2;
+				// May cross both x and y bounds
+				if (y < ballMinY) {
+					
+				   y = ballMinY;
+				} else if (y > ballMaxY) {
+				   
+				   y = ballMaxY;
 				}
-			}
-			// May cross both x and y bounds
-			if (y < ballMinY) {
-				
-			   y = ballMinY;
-			} else if (y > ballMaxY) {
-			   
-			   y = ballMaxY;
-			}
-			// If the ball is under the target, move down
-			else if(y < targetPoint.y) {
-				y -= speed;
-			}
-			// if the ball is above the target, move up
-			else if(y > targetPoint.y) {
-				y += speed;
-			}
-			else if(y == targetPoint.y) {
-				randomNum = ThreadLocalRandom.current().nextInt(0,2);
-				if (randomNum == 0) {
-					y += speed;
-				}
-				else {
+				// If the ball is under the target, move down
+				else if(y < targetPoint.y) {
 					y -= speed;
 				}
-			}
-			else if(x == targetPoint.x && y == targetPoint.y) {
-				randomNum = ThreadLocalRandom.current().nextInt(0,4);
-				if (randomNum == 0) {
-					x += speed+1*2;
-					y += speed+1*2;
+				// if the ball is above the target, move up
+				else if(y > targetPoint.y) {
+					y += speed;
 				}
-				else if(randomNum == 1){
-					x -= speed+1*2;
-					y -= speed+1*2;
+				else if(y == targetPoint.y) {
+					randomNum = ThreadLocalRandom.current().nextInt(0,2);
+					if (randomNum == 0) {
+						y += speed;
+					}
+					else {
+						y -= speed;
+					}
 				}
-				else if (randomNum == 2) {
-					x += speed+1*2;
-					y -= speed+1*2;
-				}
-				else {
-					x -= speed+1*2;
-					y += speed+1*2;
+				else if(x == targetPoint.x && y == targetPoint.y) {
+					randomNum = ThreadLocalRandom.current().nextInt(0,4);
+					if (randomNum == 0) {
+						x += speed+1*2;
+						y += speed+1*2;
+					}
+					else if(randomNum == 1){
+						x -= speed+1*2;
+						y -= speed+1*2;
+					}
+					else if (randomNum == 2) {
+						x += speed+1*2;
+						y -= speed+1*2;
+					}
+					else {
+						x -= speed+1*2;
+						y += speed+1*2;
+					}
 				}
 			}
 		}
@@ -162,8 +165,10 @@ public class Archer extends Fighter{
 	
 	/** Draw itself using the given graphics context. */
 	public void draw(Graphics g) {
-		g.setColor(Color.green);
-		g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+		if (health > 0) {
+			g.setColor(Color.green);
+			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+		}
 	}
 
 	

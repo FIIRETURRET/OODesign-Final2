@@ -3,17 +3,19 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 public class Cavalry extends Fighter{
+	CollisionManager collisionManager;
 
 	public Cavalry(int newRadius, int newx, int newy) {
 		description = "A Knight on a horse.";
 		type = "cavalry";
 		health = 50;
-		speed = 5;
+		speed = 4;
 		radius = newRadius;
 		x = newx;
 		y = newy;
 		location = new Point(x,y);
 		localSearchSpace = 50;
+		collisionManager = new CollisionManager();
 	}
 	
 	// Find the closest Archer
@@ -32,7 +34,7 @@ public class Cavalry extends Fighter{
 	public void attack(Fighter target) {
 		// TODO Auto-generated method stub
 		target.takeDamage(10);
-		System.out.println("Warrior attack");
+		System.out.println("Cavalry attacking target");
 	}
 	
 	public void takeDamage(int damage) {
@@ -70,44 +72,48 @@ public class Cavalry extends Fighter{
 		} else if (y > ballMaxY) {
 		   y = ballMaxY;
 		   
+		} else if(collisionManager.findCollision(myself, target) == true) {
+			attack(target);
 		} else {
 			
-			// The x and y offsets to move the ball
-			double dx;
-			double dy;
-			
-			// The values for the target's x and y
-			int targetx;
-			int targety;
-			
-			// Set the target to the current target's position
-			targetx = target.x;
-			targety = target.y;
-			
-			// Find the x and y differences between the ball and the target
-			int diffx = targetx - x;
-			int diffy = targety - y;
-			
-			double diffxSquare = Math.pow(diffx, 2);
-			double diffySquare = Math.pow(diffy, 2);
-			// Calculate the distance between the ball and the target
-			double dist = Math.sqrt(diffxSquare + diffySquare);
-			
-			// Calculate the x and y offsets to move the ball
-			dx = (speed / dist) * diffx;
-			dy = (speed / dist) * diffy;
-			
-			// If the ball moves past the target, keep it at the target
-			if (Math.abs(diffx) < Math.abs(dx)) {
-				x = targetx;
+			if (target.health > 0) {
+				// The x and y offsets to move the ball
+				double dx;
+				double dy;
+				
+				// The values for the target's x and y
+				int targetx;
+				int targety;
+				
+				// Set the target to the current target's position
+				targetx = target.x;
+				targety = target.y;
+				
+				// Find the x and y differences between the ball and the target
+				int diffx = targetx - x;
+				int diffy = targety - y;
+				
+				double diffxSquare = Math.pow(diffx, 2);
+				double diffySquare = Math.pow(diffy, 2);
+				// Calculate the distance between the ball and the target
+				double dist = Math.sqrt(diffxSquare + diffySquare);
+				
+				// Calculate the x and y offsets to move the ball
+				dx = (speed / dist) * diffx;
+				dy = (speed / dist) * diffy;
+				
+				// If the ball moves past the target, keep it at the target
+				if (Math.abs(diffx) < Math.abs(dx)) {
+					x = targetx;
+				}
+				if (Math.abs(diffy) < Math.abs(dy)) {
+					y = targety;
+				}
+				
+				// Move the ball
+				x += Math.round(dx);
+				y += Math.round(dy);
 			}
-			if (Math.abs(diffy) < Math.abs(dy)) {
-				y = targety;
-			}
-			
-			// Move the ball
-			x += Math.round(dx);
-			y += Math.round(dy);
 			
 		}
 		
@@ -117,7 +123,9 @@ public class Cavalry extends Fighter{
 	
 	/** Draw itself using the given graphics context. */
 	public void draw(Graphics g) {
-		g.setColor(Color.red);
-		g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+		if (health > 0) {
+			g.setColor(Color.red);
+			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+		}
 	}
 }

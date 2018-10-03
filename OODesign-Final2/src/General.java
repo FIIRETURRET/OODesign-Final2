@@ -34,17 +34,34 @@ public class General {
 				// Find the closest enemy by running though a list of all archers in the field
 				if (findDistanceBetweenPoints(fighter.getPoint(), archerList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
 					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					enemyPoint = archerList[x].getPoint();
-					closestEnemy = archerList[x];
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
+					// if our archer in the list is dead, don't consider it
+					if (archerList[x].health > 0) {
+						enemyPoint = archerList[x].getPoint();
+						closestEnemy = archerList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 				// Otherwise keep the current target
 				else {
-					closestEnemy = fighter.getTarget();
-					enemyPoint = fighter.getTargetPoint();
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
+					// If the current target is dead take the new one
+					if (closestEnemy.health > 0)
+					{
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						enemyPoint = archerList[x].getPoint();
+						closestEnemy = archerList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 			}
 		}
@@ -70,13 +87,33 @@ public class General {
 				// Find the closest enemy by running though a list of all fighters in the field
 				if (findDistanceBetweenPoints(fighter.getPoint(), warriorList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
 					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					enemyPoint = warriorList[x].getPoint();
-					closestEnemy = warriorList[x];
+					if (warriorList[x].health > 0) {
+						enemyPoint = warriorList[x].getPoint();
+						closestEnemy = warriorList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 				// Otherwise keep the current target
 				else {
-					closestEnemy = fighter.getTarget();
-					enemyPoint = fighter.getTargetPoint();
+					// If the current target is dead take the new one
+					if (closestEnemy.health > 0)
+					{
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						enemyPoint = warriorList[x].getPoint();
+						closestEnemy = warriorList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 			}
 		}
