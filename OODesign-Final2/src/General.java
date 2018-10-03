@@ -106,13 +106,33 @@ public class General {
 				// Find the closest enemy by running though a list of all fighters in the field
 				if (findDistanceBetweenPoints(fighter.getPoint(), warriorList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
 					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-					enemyPoint = warriorList[x].getPoint();
-					closestEnemy = warriorList[x];
+					if (warriorList[x].health > 0) {
+						enemyPoint = warriorList[x].getPoint();
+						closestEnemy = warriorList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 				// Otherwise keep the current target
 				else {
-					closestEnemy = fighter.getTarget();
-					enemyPoint = fighter.getTargetPoint();
+					// If the current target is dead take the new one
+					if (closestEnemy.health > 0)
+					{
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						enemyPoint = warriorList[x].getPoint();
+						closestEnemy = warriorList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 			}
 		}
@@ -163,7 +183,7 @@ public class General {
 	}
 	
 	public double findDistanceBetweenPoints(Point p1, Point p2) {
-		return Math.sqrt((p2.y - p1.y) * (p2.y - p1.y) + (p2.x - p2.x) * (p2.x - p2.x));
+		return Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
 	}
 	
 	public void update() {

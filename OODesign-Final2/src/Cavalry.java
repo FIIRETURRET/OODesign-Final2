@@ -4,18 +4,24 @@ import java.awt.Point;
 
 public class Cavalry extends Fighter{
 	CollisionManager collisionManager;
+	boolean charging;
+	Point lastStopPoint;
+	int chargingSpeed;
 
 	public Cavalry(int newRadius, int newx, int newy) {
 		description = "A Knight on a horse.";
 		type = "cavalry";
 		health = 60;
 		speed = 4;
+		chargingSpeed = 6;
 		radius = newRadius;
 		x = newx;
 		y = newy;
 		location = new Point(x,y);
 		localSearchSpace = 50;
 		collisionManager = new CollisionManager();
+		charging = false;
+		lastStopPoint = new Point(x,y);
 	}
 	
 	// Find the closest Archer
@@ -35,8 +41,14 @@ public class Cavalry extends Fighter{
 		// TODO Auto-generated method stub
 		if (health > 0) {
 			if (target.health > 0) {
-				target.takeDamage(10);
-				System.out.println("Cavalry attacking target");
+				if (charging == true) {
+					target.takeDamage(40);
+					System.out.println("Cavalry charging target");
+					charging = false;
+				} else {
+					target.takeDamage(10);
+					System.out.println("Cavalry attacking target");
+				}
 			}
 		}
 	}
@@ -44,6 +56,10 @@ public class Cavalry extends Fighter{
 	public void takeDamage(int damage) {
 		health = health-damage;
 		System.out.println("Cavalry took damage");
+	}
+	
+	public double findDistanceBetweenPoints(Point p1, Point p2) {
+		return Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
 	}
 	
 	public void update(Fighter target, Fighter myself, ContainerBox box) {
@@ -62,6 +78,14 @@ public class Cavalry extends Fighter{
 		int ballMaxY = box.maxY - radius;
 		
 		if (health > 0) {
+			// check to see if we should be charging
+			if (charging == false) {
+				// if distance between our last collision point and our current location is far enough, then we are charging
+				if(findDistanceBetweenPoints(lastStopPoint, location) > 100) {
+					charging = true;
+					System.out.println("Cavalry charging");
+				}
+			}
 			// Movement
 			location = new Point(x,y);
 			targetPoint = target.getPoint();
@@ -80,6 +104,7 @@ public class Cavalry extends Fighter{
 			   
 			} else if(collisionManager.findCollision(myself, target) == true) {
 				attack(target);
+				lastStopPoint = new Point(x,y);
 			} else {
 				
 				if (target.health > 0) {
@@ -105,8 +130,14 @@ public class Cavalry extends Fighter{
 					double dist = Math.sqrt(diffxSquare + diffySquare);
 					
 					// Calculate the x and y offsets to move the ball
-					dx = (speed / dist) * diffx;
-					dy = (speed / dist) * diffy;
+					if(charging == true) {
+						dx = (chargingSpeed / dist) * diffx;
+						dy = (chargingSpeed / dist) * diffy;
+					} else {
+						dx = (speed / dist) * diffx;
+						dy = (speed / dist) * diffy;
+					}
+					
 					
 					// If the ball moves past the target, keep it at the target
 					if (Math.abs(diffx) < Math.abs(dx)) {
