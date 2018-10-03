@@ -33,9 +33,11 @@ public class Warrior extends Fighter{
 
 	public void attack(Fighter target) {
 		// TODO Auto-generated method stub
-		if (target.health > 0) {
-			target.takeDamage(10);
-			System.out.println("Warrior Attacking target");
+		if (health > 0) {
+			if (target.health > 0) {
+				target.takeDamage(10);
+				System.out.println("Warrior Attacking target");
+			}
 		}
 	}
 	

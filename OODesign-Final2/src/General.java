@@ -29,6 +29,41 @@ public class General {
 		
 		// Check to see if we are dealing with a warrior or an archer
 		if(fighter.type == "warrior") {
+			// First find the closest cavalry unit, warriors can fight back against cavalry.
+			for (int x = 0; x < cavalryList.length; x++) {
+				if (findDistanceBetweenPoints(fighter.getPoint(), cavalryList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
+					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
+					// if our archer in the list is dead, don't consider it
+					if (cavalryList[x].health > 0) {
+						enemyPoint = cavalryList[x].getPoint();
+						closestEnemy = cavalryList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
+				}
+				// Otherwise keep the current target
+				else {
+					// If the current target is dead take the new one
+					if (closestEnemy.health > 0)
+					{
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						enemyPoint = cavalryList[x].getPoint();
+						closestEnemy = cavalryList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
+				}
+			}
+			
 			// Run through the list of archers so see which is closest
 			for (int x = 0; x < archerList.length; x++) {
 				// Find the closest enemy by running though a list of all archers in the field
