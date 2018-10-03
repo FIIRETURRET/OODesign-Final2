@@ -8,7 +8,7 @@ public class Cavalry extends Fighter{
 	Point lastStopPoint;
 	int chargingSpeed;
 
-	public Cavalry(int newRadius, int newx, int newy) {
+	public Cavalry(int newRadius, int newx, int newy, int team) {
 		description = "A Knight on a horse.";
 		type = "cavalry";
 		health = 60;
@@ -17,6 +17,7 @@ public class Cavalry extends Fighter{
 		radius = newRadius;
 		x = newx;
 		y = newy;
+		this.team = team;
 		location = new Point(x,y);
 		collisionManager = new CollisionManager();
 		charging = false;
@@ -167,6 +168,13 @@ public class Cavalry extends Fighter{
 				g.setColor(Color.red);
 			}
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+			if (team == 1) {
+				g.setColor(Color.gray);
+			} else if (team == 2) {
+				g.setColor(Color.pink);
+			}
+			
+			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);
 		}
 	}
 }

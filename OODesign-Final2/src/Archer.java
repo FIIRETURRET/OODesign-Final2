@@ -6,15 +6,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Archer extends Fighter{
 	
 	private int randomNum;
+	private boolean attacking;
 
-	public Archer(int newRadius, int newx, int newy) {
+	public Archer(int newRadius, int newx, int newy, int team) {
 		description = "An Archer";
 		type = "archer";
 		health = 25;
-		speed = 2;
+		speed = 1;
 		radius = newRadius;
 		x = newx;
 		y = newy;
+		this.team = team;
 		location = new Point(x,y);
 	}
 	
@@ -38,6 +40,7 @@ public class Archer extends Fighter{
 		// buffer the archers attack based on time
 		target.takeDamage(1);
 		System.out.println("Archer attacking target");
+		attacking = true;
 		
 	}
 	
@@ -55,6 +58,7 @@ public class Archer extends Fighter{
 		this.target = target;
 		// If we don't have a target don't update
 		if (target == null) {
+			attacking = false;
 			return;
 		}
 		this.targetPoint = target.getPoint();
@@ -72,6 +76,7 @@ public class Archer extends Fighter{
 			if (target.health > 0) {
 				
 				if(findDistanceBetweenPoints(location, target.location) < 100) {
+					attacking = false;
 					//Movement
 					// Check if the ball moves over the bounds. If so, adjust the position and speed.
 					if (x < ballMinX) {
@@ -165,8 +170,12 @@ public class Archer extends Fighter{
 					// The range in which an archer can shoot a target.
 					if (findDistanceBetweenPoints(location,target.location) < 300) {
 						attack(target);
-					}	
+					} else {
+						attacking = false;
+					}
 				}
+			} else {
+				attacking = false;
 			}
 		}
 		
@@ -183,6 +192,21 @@ public class Archer extends Fighter{
 		if (health > 0) {
 			g.setColor(Color.green);
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+			if (team == 1) {
+				g.setColor(Color.gray);
+			} else if (team == 2) {
+				g.setColor(Color.pink);
+			}
+			
+			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);
+		}
+	}
+	
+	public void drawAttack(Graphics g) {
+		if (health > 0) {
+			if (attacking == true) {
+				g.drawLine(x, y, target.location.x, target.location.y);
+			}	
 		}
 	}
 

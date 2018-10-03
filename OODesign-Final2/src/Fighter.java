@@ -53,4 +53,9 @@ public abstract class Fighter {
 	public abstract void draw(Graphics g);
 	public abstract void takeDamage(int damage);
 
+	public void drawAttack(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

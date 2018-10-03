@@ -44,8 +44,8 @@ public class BattleWorld extends JPanel {
       int angleInDegree = rand.nextInt(360);
       
       listOfWarriors = makeWarriors(numWarriors, 1);
-      listOfArchers = makeArchers(numArchers);
-      listOfCavalry = makeCavalry(numCavalry);
+      listOfArchers = makeArchers(numArchers, 1);
+      listOfCavalry = makeCavalry(numCavalry, 1);
       general = new General(listOfWarriors, listOfArchers, listOfCavalry);
      
       // Init the Container Box to fill the screen
@@ -124,7 +124,7 @@ public class BattleWorld extends JPanel {
 	   return listOfFighters;   
    }
    
-   public Fighter[] makeArchers(int num) {
+   public Fighter[] makeArchers(int num, int team) {
 	   Fighter[] listOfFighters = new Fighter[num];
 	   int radius = 10;
 	   Random rand = new Random();
@@ -132,13 +132,13 @@ public class BattleWorld extends JPanel {
 	   for (int q = 0; q <= num-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
-		   listOfFighters[q] = new Archer(radius, x, y);;
+		   listOfFighters[q] = new Archer(radius, x, y, team);;
 		}
 		
 	   return listOfFighters;   
    }
    
-   public Fighter[] makeCavalry(int num) {
+   public Fighter[] makeCavalry(int num, int team) {
 	   Fighter[] listOfFighters = new Fighter[num];
 	   int radius = 10;
 	   Random rand = new Random();
@@ -146,7 +146,7 @@ public class BattleWorld extends JPanel {
 	   for (int q = 0; q <= num-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
-		   listOfFighters[q] = new Cavalry(radius, x, y);;
+		   listOfFighters[q] = new Cavalry(radius, x, y, team);;
 		}
 		
 	   return listOfFighters;   
@@ -165,6 +165,7 @@ public class BattleWorld extends JPanel {
          }
          for (int x = 0; x < numArchers; x++) {
         	 listOfArchers[x].draw(g);
+        	 listOfArchers[x].drawAttack(g);
          }
          for (int x = 0; x < numCavalry; x++) {
         	 listOfCavalry[x].draw(g);
