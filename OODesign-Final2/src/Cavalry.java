@@ -162,7 +162,11 @@ public class Cavalry extends Fighter{
 	/** Draw itself using the given graphics context. */
 	public void draw(Graphics g) {
 		if (health > 0) {
-			g.setColor(Color.red);
+			if (charging == true) {
+				g.setColor(Color.orange);
+			} else {
+				g.setColor(Color.red);
+			}
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
 		}
 	}
