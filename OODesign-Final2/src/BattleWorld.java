@@ -43,7 +43,7 @@ public class BattleWorld extends JPanel {
       int speed = 5;
       int angleInDegree = rand.nextInt(360);
       
-      listOfWarriors = makeWarriors(numWarriors);
+      listOfWarriors = makeWarriors(numWarriors, 1);
       listOfArchers = makeArchers(numArchers);
       listOfCavalry = makeCavalry(numCavalry);
       general = new General(listOfWarriors, listOfArchers, listOfCavalry);
@@ -110,7 +110,7 @@ public class BattleWorld extends JPanel {
       
    }
    
-   public Fighter[] makeWarriors(int num) {
+   public Fighter[] makeWarriors(int num, int team) {
 	   Fighter[] listOfFighters = new Fighter[num];
 	   int radius = 10;
 	   Random rand = new Random();
@@ -118,7 +118,7 @@ public class BattleWorld extends JPanel {
 	   for (int q = 0; q <= num-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
-		   listOfFighters[q] = new Warrior(radius, x, y);;
+		   listOfFighters[q] = new Warrior(radius, x, y, team);;
 		}
 		
 	   return listOfFighters;   

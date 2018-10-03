@@ -11,12 +11,11 @@ public class Archer extends Fighter{
 		description = "An Archer";
 		type = "archer";
 		health = 25;
-		speed = 1;
+		speed = 2;
 		radius = newRadius;
 		x = newx;
 		y = newy;
 		location = new Point(x,y);
-		localSearchSpace = 50;
 	}
 	
 	// Find the closest Archer
@@ -163,7 +162,10 @@ public class Archer extends Fighter{
 						}
 					}
 				} else {
-					attack(target);
+					// The range in which an archer can shoot a target.
+					if (findDistanceBetweenPoints(location,target.location) < 300) {
+						attack(target);
+					}	
 				}
 			}
 		}

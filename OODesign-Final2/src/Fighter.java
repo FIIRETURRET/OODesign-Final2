@@ -10,7 +10,7 @@ public abstract class Fighter {
 	int radius;
 	int x;
 	int y;
-	int localSearchSpace;
+	int team;
 	Point location = new Point(x,y);
 	Fighter target = null;
 	Point targetPoint = new Point(1000,1000);

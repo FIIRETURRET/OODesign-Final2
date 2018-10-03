@@ -5,7 +5,7 @@ import java.awt.Point;
 public class Warrior extends Fighter{
 	CollisionManager collisionManager;
 	
-	public Warrior(int newRadius, int newx, int newy) {
+	public Warrior(int newRadius, int newx, int newy, int team) {
 		description = "A Warrior";
 		type = "warrior";
 		health = 50;
@@ -13,8 +13,8 @@ public class Warrior extends Fighter{
 		radius = newRadius;
 		x = newx;
 		y = newy;
+		this.team = team;
 		location = new Point(x,y);
-		localSearchSpace = 50;
 		collisionManager = new CollisionManager();
 	}
 	
@@ -137,6 +137,13 @@ public class Warrior extends Fighter{
 		if (health > 0) {
 			g.setColor(Color.blue);
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
+			if (team == 1) {
+				g.setColor(Color.gray);
+			} else if (team == 2) {
+				g.setColor(Color.pink);
+			}
+			
+			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);
 		}
 	}
 

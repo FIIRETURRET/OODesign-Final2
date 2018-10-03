@@ -18,7 +18,6 @@ public class Cavalry extends Fighter{
 		x = newx;
 		y = newy;
 		location = new Point(x,y);
-		localSearchSpace = 50;
 		collisionManager = new CollisionManager();
 		charging = false;
 		lastStopPoint = new Point(x,y);
