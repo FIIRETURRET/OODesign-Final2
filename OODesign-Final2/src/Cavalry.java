@@ -42,8 +42,8 @@ public class Cavalry extends Fighter{
 		if (health > 0) {
 			if (target.health > 0) {
 				if (charging == true) {
-					target.takeDamage(40);
 					System.out.println("Cavalry charging target");
+					target.takeDamage(40);
 					charging = false;
 				} else {
 					target.takeDamage(10);
