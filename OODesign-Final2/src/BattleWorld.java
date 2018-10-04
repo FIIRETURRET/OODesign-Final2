@@ -11,10 +11,11 @@ public class BattleWorld extends JPanel {
    
    int numWarriorsTeam1 = 20;
    int numWarriorsTeam2 = 20;
-   int numArchersTeam1 = 10;
-   int numArchersTeam2 = 10;
-   int numCavalryTeam1 = 10;
-   int numCavalryTeam2 = 10;
+   int numArchersTeam1 = 20;
+   int numArchersTeam2 = 20;
+   int numCavalryTeam1 = 20;
+   int numCavalryTeam2 = 20;
+   
    Fighter[] listOfWarriors;
    Fighter[] listOfArchers;
    Fighter[] listOfCavalry;

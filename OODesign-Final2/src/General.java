@@ -82,6 +82,7 @@ public class General {
 			if (closestEnemy != null){
 				enemyPoint = closestEnemy.location;
 			}
+			
 		} else if (fighter.type == "archer") {
 			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, cavalryList );
 			if (closestEnemy != null){

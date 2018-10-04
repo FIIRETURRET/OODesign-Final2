@@ -85,103 +85,201 @@ public class Archer extends Fighter{
 		
 			if (target.health > 0) {
 				
-				if(findDistanceBetweenPoints(location, target.location) < 100) {
+				// If the target is outside our range
+				if (findDistanceBetweenPoints(target.location, location) >= 200) {
 					attacking = false;
-					//Movement
-					// Check if the ball moves over the bounds. If so, adjust the position and speed.
-					if (x < ballMinX) {
-					   x = ballMinX;     // Re-position the ball at the edge
-					   
-					} else if (x > ballMaxX) {
-					   x = ballMaxX;
-					}
-					// If the ball is to the left of the target, move left
-					else if(x < targetPoint.x) {
-						x -= speed;
-					}
-					// If the ball is to the right of the target, move right
-					else if(x > targetPoint.x) {
-						x += speed;
-					}
-					// If the ball is on the same spot as the target, move a random direction
-					else if(x == targetPoint.x) {
-						randomNum = ThreadLocalRandom.current().nextInt(0,2);
-						if (randomNum == 0) {
+					// if the target is another archer
+					if (target.type == "archer") {
+						//Movement away from target
+						// Check if the ball moves over the bounds. If so, adjust the position and speed.
+						if (x < ballMinX) {
+						   x = ballMinX;     // Re-position the ball at the edge
+						   
+						} else if (x > ballMaxX) {
+						   x = ballMaxX;
+						}
+						// If the ball is to the left of the target, move right
+						else if(x < targetPoint.x) {
 							x += speed;
 						}
-						else {
+						// If the ball is to the right of the target, move left
+						else if(x > targetPoint.x) {
 							x -= speed;
 						}
-					}
-					else if(x == targetPoint.x && y == targetPoint.y) {
-						randomNum = ThreadLocalRandom.current().nextInt(0,4);
-						if (randomNum == 0) {
-							x += speed+1*2;
-							y += speed+1*2;
+						// If the ball is on the same spot as the target, move a random direction
+						else if(x == targetPoint.x) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,2);
+							if (randomNum == 0) {
+								x += speed;
+							}
+							else {
+								x -= speed;
+							}
 						}
-						else if(randomNum == 1){
-							x -= speed+1*2;
-							y -= speed+1*2;
+						else if(x == targetPoint.x && y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,4);
+							if (randomNum == 0) {
+								x += speed+1*2;
+								y += speed+1*2;
+							}
+							else if(randomNum == 1){
+								x -= speed+1*2;
+								y -= speed+1*2;
+							}
+							else if (randomNum == 2) {
+								x += speed+1*2;
+								y -= speed+1*2;
+							}
+							else {
+								x -= speed+1*2;
+								y += speed+1*2;
+							}
 						}
-						else if (randomNum == 2) {
-							x += speed+1*2;
-							y -= speed+1*2;
+						// May cross both x and y bounds
+						if (y < ballMinY) {
+							
+						   y = ballMinY;
+						} else if (y > ballMaxY) {
+						   
+						   y = ballMaxY;
 						}
-						else {
-							x -= speed+1*2;
-							y += speed+1*2;
-						}
-					}
-					// May cross both x and y bounds
-					if (y < ballMinY) {
-						
-					   y = ballMinY;
-					} else if (y > ballMaxY) {
-					   
-					   y = ballMaxY;
-					}
-					// If the ball is under the target, move down
-					else if(y < targetPoint.y) {
-						y -= speed;
-					}
-					// if the ball is above the target, move up
-					else if(y > targetPoint.y) {
-						y += speed;
-					}
-					else if(y == targetPoint.y) {
-						randomNum = ThreadLocalRandom.current().nextInt(0,2);
-						if (randomNum == 0) {
+						// If the ball is under the target, move up
+						else if(y < targetPoint.y) {
 							y += speed;
 						}
-						else {
+						// if the ball is above the target, move down
+						else if(y > targetPoint.y) {
 							y -= speed;
 						}
-					}
-					else if(x == targetPoint.x && y == targetPoint.y) {
-						randomNum = ThreadLocalRandom.current().nextInt(0,4);
-						if (randomNum == 0) {
-							x += speed+1*2;
-							y += speed+1*2;
+						else if(y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,2);
+							if (randomNum == 0) {
+								y += speed;
+							}
+							else {
+								y -= speed;
+							}
 						}
-						else if(randomNum == 1){
-							x -= speed+1*2;
-							y -= speed+1*2;
-						}
-						else if (randomNum == 2) {
-							x += speed+1*2;
-							y -= speed+1*2;
-						}
-						else {
-							x -= speed+1*2;
-							y += speed+1*2;
+						else if(x == targetPoint.x && y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,4);
+							if (randomNum == 0) {
+								x += speed+1*2;
+								y += speed+1*2;
+							}
+							else if(randomNum == 1){
+								x -= speed+1*2;
+								y -= speed+1*2;
+							}
+							else if (randomNum == 2) {
+								x += speed+1*2;
+								y -= speed+1*2;
+							}
+							else {
+								x -= speed+1*2;
+								y += speed+1*2;
+							}
 						}
 					}
 				} else {
-					// The range in which an archer can shoot a target.
-					if (findDistanceBetweenPoints(location,target.location) < 200) {
-						attack(target);
-					} else {
+					// if the target is not another archer, run away from it
+					if(findDistanceBetweenPoints(location, target.location) < 100) {
 						attacking = false;
+						//Movement away from target
+						// Check if the ball moves over the bounds. If so, adjust the position and speed.
+						if (x < ballMinX) {
+						   x = ballMinX;     // Re-position the ball at the edge
+						   
+						} else if (x > ballMaxX) {
+						   x = ballMaxX;
+						}
+						// If the ball is to the left of the target, move left
+						else if(x < targetPoint.x) {
+							x -= speed;
+						}
+						// If the ball is to the right of the target, move right
+						else if(x > targetPoint.x) {
+							x += speed;
+						}
+						// If the ball is on the same spot as the target, move a random direction
+						else if(x == targetPoint.x) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,2);
+							if (randomNum == 0) {
+								x += speed;
+							}
+							else {
+								x -= speed;
+							}
+						}
+						else if(x == targetPoint.x && y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,4);
+							if (randomNum == 0) {
+								x += speed+1*2;
+								y += speed+1*2;
+							}
+							else if(randomNum == 1){
+								x -= speed+1*2;
+								y -= speed+1*2;
+							}
+							else if (randomNum == 2) {
+								x += speed+1*2;
+								y -= speed+1*2;
+							}
+							else {
+								x -= speed+1*2;
+								y += speed+1*2;
+							}
+						}
+						// May cross both x and y bounds
+						if (y < ballMinY) {
+							
+						   y = ballMinY;
+						} else if (y > ballMaxY) {
+						   
+						   y = ballMaxY;
+						}
+						// If the ball is under the target, move down
+						else if(y < targetPoint.y) {
+							y -= speed;
+						}
+						// if the ball is above the target, move up
+						else if(y > targetPoint.y) {
+							y += speed;
+						}
+						else if(y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,2);
+							if (randomNum == 0) {
+								y += speed;
+							}
+							else {
+								y -= speed;
+							}
+						}
+						else if(x == targetPoint.x && y == targetPoint.y) {
+							randomNum = ThreadLocalRandom.current().nextInt(0,4);
+							if (randomNum == 0) {
+								x += speed+1*2;
+								y += speed+1*2;
+							}
+							else if(randomNum == 1){
+								x -= speed+1*2;
+								y -= speed+1*2;
+							}
+							else if (randomNum == 2) {
+								x += speed+1*2;
+								y -= speed+1*2;
+							}
+							else {
+								x -= speed+1*2;
+								y += speed+1*2;
+							}
+						}
+					} else {
+						// The range in which an archer can shoot a target.
+						if (findDistanceBetweenPoints(location,target.location) < 200) {
+							attack(target);
+						} else {
+							attacking = false;
+						}
 					}
 				}
 			} else {
