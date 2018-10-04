@@ -15,35 +15,38 @@ public class General {
 	
 	public Fighter findCLosestTypeFighter(Fighter fighter, Fighter closestEnemy, Point enemyPoint, Fighter[] fighterList) {
 		for (int x = 0; x < fighterList.length; x++) {
-			if (findDistanceBetweenPoints(fighter.getPoint(), fighterList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
-				// if our new enemy is closer than our old enemy update the saved point and closestEnemy
-				// if our archer in the list is dead, don't consider it
-				if (fighterList[x].health > 0) {
-					enemyPoint = fighterList[x].getPoint();
-					closestEnemy = fighterList[x];
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
-				} else {
-					closestEnemy = fighter.getTarget();
-					enemyPoint = fighter.getTargetPoint();
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
+			// Check to see if current target is on the other team
+			if (fighterList[x].team != fighter.team){
+				if (findDistanceBetweenPoints(fighter.getPoint(), fighterList[x].getPoint()) < findDistanceBetweenPoints(fighter.getPoint(), fighter.getTargetPoint())) {
+					// if our new enemy is closer than our old enemy update the saved point and closestEnemy
+					// if our archer in the list is dead, don't consider it
+					if (fighterList[x].health > 0) {
+						enemyPoint = fighterList[x].getPoint();
+						closestEnemy = fighterList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
-			}
-			// Otherwise keep the current target
-			else {
-				// If the current target is dead take the new one
-				if (closestEnemy.health > 0)
-				{
-					closestEnemy = fighter.getTarget();
-					enemyPoint = fighter.getTargetPoint();
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
-				} else {
-					enemyPoint = fighterList[x].getPoint();
-					closestEnemy = fighterList[x];
-					fighter.setTarget(closestEnemy);
-					fighter.setTargetPoint(closestEnemy.getPoint());
+				// Otherwise keep the current target
+				else {
+					// If the current target is dead take the new one
+					if (closestEnemy.health > 0)
+					{
+						closestEnemy = fighter.getTarget();
+						enemyPoint = fighter.getTargetPoint();
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					} else {
+						enemyPoint = fighterList[x].getPoint();
+						closestEnemy = fighterList[x];
+						fighter.setTarget(closestEnemy);
+						fighter.setTargetPoint(closestEnemy.getPoint());
+					}
 				}
 			}
 		}
@@ -68,16 +71,44 @@ public class General {
 		// Check to see if we are dealing with a warrior or an archer
 		if(fighter.type == "warrior") {
 			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, cavalryList );
-			enemyPoint = closestEnemy.location;
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
 			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, archerList );
-			enemyPoint = closestEnemy.location;
-		} else if (fighter.type == "archer") {
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
 			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, warriorList );
-			enemyPoint = closestEnemy.location;
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
+		} else if (fighter.type == "archer") {
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, cavalryList );
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, archerList );
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, warriorList );
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
 			
 		} else if(fighter.type == "cavalry") {
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, cavalryList );
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
+			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, archerList );
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
 			closestEnemy = findCLosestTypeFighter(fighter, closestEnemy, enemyPoint, warriorList );
-			enemyPoint = closestEnemy.location;
+			if (closestEnemy != null){
+				enemyPoint = closestEnemy.location;
+			}
 		}
 		return closestEnemy;
 	}

@@ -9,7 +9,7 @@ public class Warrior extends Fighter{
 		description = "A Warrior";
 		type = "warrior";
 		health = 50;
-		speed = 3;
+		speed = 2;
 		radius = newRadius;
 		x = newx;
 		y = newy;
@@ -138,9 +138,9 @@ public class Warrior extends Fighter{
 			g.setColor(Color.blue);
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
 			if (team == 1) {
-				g.setColor(Color.gray);
+				g.setColor(Color.magenta);
 			} else if (team == 2) {
-				g.setColor(Color.pink);
+				g.setColor(Color.white);
 			}
 			
 			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);

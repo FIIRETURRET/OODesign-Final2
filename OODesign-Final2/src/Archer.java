@@ -7,6 +7,7 @@ public class Archer extends Fighter{
 	
 	private int randomNum;
 	private boolean attacking;
+	private long lastShotTime;
 
 	public Archer(int newRadius, int newx, int newy, int team) {
 		description = "An Archer";
@@ -18,6 +19,7 @@ public class Archer extends Fighter{
 		y = newy;
 		this.team = team;
 		location = new Point(x,y);
+		lastShotTime = 0;
 	}
 	
 	// Find the closest Archer
@@ -38,9 +40,17 @@ public class Archer extends Fighter{
 		// TODO Auto-generated method stub
 		// Draw a line from archer to target
 		// buffer the archers attack based on time
-		target.takeDamage(1);
-		System.out.println("Archer attacking target");
-		attacking = true;
+		long elapsedTime = System.currentTimeMillis() - lastShotTime;
+		// If the time since the archer last took a shot is 1 second then attack
+		if (elapsedTime/1000 >=1 )
+		{
+			target.takeDamage(15);
+			System.out.println("Archer attacking target");
+			attacking = true;
+			lastShotTime = System.currentTimeMillis();
+		} else {
+			attacking = false;
+		}
 		
 	}
 	
@@ -168,7 +178,7 @@ public class Archer extends Fighter{
 					}
 				} else {
 					// The range in which an archer can shoot a target.
-					if (findDistanceBetweenPoints(location,target.location) < 300) {
+					if (findDistanceBetweenPoints(location,target.location) < 200) {
 						attack(target);
 					} else {
 						attacking = false;
@@ -193,9 +203,9 @@ public class Archer extends Fighter{
 			g.setColor(Color.green);
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
 			if (team == 1) {
-				g.setColor(Color.gray);
+				g.setColor(Color.magenta);
 			} else if (team == 2) {
-				g.setColor(Color.pink);
+				g.setColor(Color.white);
 			}
 			
 			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);

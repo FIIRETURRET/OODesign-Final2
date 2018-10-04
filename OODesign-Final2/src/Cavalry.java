@@ -12,8 +12,8 @@ public class Cavalry extends Fighter{
 		description = "A Knight on a horse.";
 		type = "cavalry";
 		health = 60;
-		speed = 4;
-		chargingSpeed = 6;
+		speed = 3;
+		chargingSpeed = 5;
 		radius = newRadius;
 		x = newx;
 		y = newy;
@@ -169,9 +169,9 @@ public class Cavalry extends Fighter{
 			}
 			g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
 			if (team == 1) {
-				g.setColor(Color.gray);
+				g.setColor(Color.magenta);
 			} else if (team == 2) {
-				g.setColor(Color.pink);
+				g.setColor(Color.white);
 			}
 			
 			g.fillArc((x-radius), (y-radius), (2*radius), (2*radius), 0, 90);
