@@ -9,12 +9,14 @@ import javax.swing.*;
 public class BattleWorld extends JPanel {
    private static final int UPDATE_RATE = 30;  // Frames per second (fps)
    
-   int numWarriorsTeam1 = 20;
-   int numWarriorsTeam2 = 20;
-   int numArchersTeam1 = 20;
-   int numArchersTeam2 = 20;
-   int numCavalryTeam1 = 20;
-   int numCavalryTeam2 = 20;
+   int numWarriorsTeam1 = 10;
+   int numWarriorsTeam2 = 10;
+   
+   int numArchersTeam1 = 10;
+   int numArchersTeam2 = 10;
+   
+   int numCavalryTeam1 = 10;
+   int numCavalryTeam2 = 10;
    
    Fighter[] listOfWarriors;
    Fighter[] listOfArchers;
@@ -138,12 +140,12 @@ public class BattleWorld extends JPanel {
 	   int radius = 10;
 	   Random rand = new Random();
 		
-	   for (int q = 0; q <= num-1; q++) {
+	   for (int q = 0; q <= num2-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
 		   listOfFighters[q] = new Archer(radius, x, y, team2);;
 		}
-	   for (int q = num; q <= (num + num2)-1; q++) {
+	   for (int q = num2; q <= (num + num2)-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
 		   listOfFighters[q] = new Archer(radius, x, y, team);;
@@ -157,12 +159,12 @@ public class BattleWorld extends JPanel {
 	   int radius = 10;
 	   Random rand = new Random();
 		
-	   for (int q = 0; q <= num-1; q++) {
+	   for (int q = 0; q <= num2-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
 		   listOfFighters[q] = new Cavalry(radius, x, y, team2);;
 		}
-	   for (int q = num; q <= (num + num2)-1; q++) {
+	   for (int q = num2; q <= (num + num2)-1; q++) {
 		   int x = rand.nextInt(canvasWidth - radius * 2 - 20) + radius + 10;
 		   int y = rand.nextInt(canvasHeight - radius * 2 - 20) + radius + 10;
 		   listOfFighters[q] = new Cavalry(radius, x, y, team);;
